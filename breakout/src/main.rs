@@ -1,21 +1,17 @@
 mod constants;
+mod plugins;
 
 use bevy::{
     app::{App, Startup},
-    math::Vec3,
-    prelude::{Camera2dBundle, ClearColor, Commands, Transform},
-    sprite::{Sprite, SpriteBundle},
-    utils::default,
+    prelude::{Camera2dBundle, ClearColor, Commands},
     DefaultPlugins,
 };
 
-use crate::constants::{
-    BACKGROUND_COLOR, BOTTOM_WALL_Y_POS, PADDLE_COLOR, PADDLE_FLOOR_GAP_SIZE, PADDLE_SIZE,
-};
+use crate::{constants::BACKGROUND_COLOR, plugins::PaddlePlugin};
 
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins((DefaultPlugins, PaddlePlugin))
         .insert_resource(ClearColor(BACKGROUND_COLOR))
         .add_systems(Startup, setup)
         .run();
@@ -23,19 +19,4 @@ fn main() {
 
 fn setup(mut commands: Commands) {
     commands.spawn(Camera2dBundle::default());
-
-    let paddle_y_pos = BOTTOM_WALL_Y_POS + PADDLE_FLOOR_GAP_SIZE;
-
-    commands.spawn(SpriteBundle {
-        sprite: Sprite {
-            color: PADDLE_COLOR,
-            ..default()
-        },
-        transform: Transform {
-            scale: PADDLE_SIZE.extend(1.0),
-            translation: Vec3::new(0.0, paddle_y_pos, 0.0),
-            ..default()
-        },
-        ..default()
-    });
 }
