@@ -6,12 +6,12 @@ use bevy::{
     prelude::{Camera2dBundle, ClearColor, Commands},
     DefaultPlugins,
 };
-
-use crate::{constants::BACKGROUND_COLOR, plugins::PaddlePlugin};
+use constants::BACKGROUND_COLOR;
+use plugins::{PaddlePlugin, WallsPlugin};
 
 fn main() {
     App::new()
-        .add_plugins((DefaultPlugins, PaddlePlugin))
+        .add_plugins((DefaultPlugins, PaddlePlugin, WallsPlugin))
         .insert_resource(ClearColor(BACKGROUND_COLOR))
         .add_systems(Startup, setup)
         .run();
