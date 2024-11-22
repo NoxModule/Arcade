@@ -4,4 +4,4 @@ use bevy::{
 };
 
 #[derive(Component, Deref, DerefMut)]
-pub struct Velocity(Vec2);
+pub struct Velocity(pub Vec2);
