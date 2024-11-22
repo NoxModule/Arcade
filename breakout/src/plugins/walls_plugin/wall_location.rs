@@ -1,10 +1,10 @@
 use bevy::math::Vec2;
 
-const BOTTOM_WALL_Y_POS: f32 = -300.0;
-const LEFT_WALL_X_POS: f32 = -450.0;
-const RIGHT_WALL_X_POS: f32 = 450.0;
-const TOP_WALL_Y_POS: f32 = 300.0;
-const WALL_THICKNESS: f32 = 10.0;
+pub const BOTTOM_WALL_Y_POS: f32 = -300.0;
+pub const LEFT_WALL_X_POS: f32 = -450.0;
+pub const RIGHT_WALL_X_POS: f32 = 450.0;
+pub const TOP_WALL_Y_POS: f32 = 300.0;
+pub const WALL_THICKNESS: f32 = 10.0;
 
 pub enum WallLocation {
     Bottom,

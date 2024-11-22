@@ -1,6 +1,6 @@
 # My Games
 
-# Usage
+## Usage
 ```shell
 cargo run
 ```

@@ -1,5 +1,7 @@
 mod wall_location;
 
+pub use wall_location::{BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, WALL_THICKNESS};
+
 use bevy::{
     app::{App, Plugin, Startup},
     color::Color,
@@ -11,13 +13,13 @@ use wall_location::WallLocation;
 
 pub struct WallsPlugin;
 
-const WALL_COLOR: Color = Color::srgb(0.306, 0.455, 0.729);
-
 impl Plugin for WallsPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(Startup, setup);
     }
 }
+
+const WALL_COLOR: Color = Color::srgb(0.306, 0.455, 0.729);
 
 fn setup(mut commands: Commands) {
     spawn_wall(&mut commands, WallLocation::Bottom);

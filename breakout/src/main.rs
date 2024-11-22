@@ -1,13 +1,15 @@
-mod constants;
+mod components;
 mod plugins;
 
 use bevy::{
     app::{App, Startup},
+    color::Color,
     prelude::{Camera2dBundle, ClearColor, Commands},
     DefaultPlugins,
 };
-use constants::BACKGROUND_COLOR;
 use plugins::{PaddlePlugin, WallsPlugin};
+
+const BACKGROUND_COLOR: Color = Color::srgb(0.392, 0.584, 0.929);
 
 fn main() {
     App::new()
