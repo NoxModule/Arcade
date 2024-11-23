@@ -9,7 +9,10 @@ use bevy::{
     utils::default,
 };
 
-use super::walls_plugin::{BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, WALL_THICKNESS};
+use super::{
+    collider_plugin::Collider,
+    walls_plugin::{BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, WALL_THICKNESS},
+};
 
 #[derive(Component)]
 pub struct Paddle;
@@ -72,6 +75,7 @@ impl PaddlePlugin {
                 ..default()
             },
             Paddle,
+            Collider,
         ));
     }
 }

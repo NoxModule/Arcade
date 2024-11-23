@@ -11,6 +11,8 @@ use bevy::{
 };
 use wall_location::WallLocation;
 
+use super::collider_plugin::Collider;
+
 pub struct WallsPlugin;
 
 impl Plugin for WallsPlugin {
@@ -29,16 +31,19 @@ fn setup(mut commands: Commands) {
 }
 
 fn spawn_wall(commands: &mut Commands, location: WallLocation) {
-    commands.spawn(SpriteBundle {
-        sprite: Sprite {
-            color: WALL_COLOR,
+    commands.spawn((
+        SpriteBundle {
+            sprite: Sprite {
+                color: WALL_COLOR,
+                ..default()
+            },
+            transform: Transform {
+                scale: location.size().extend(1.0),
+                translation: location.position().extend(0.0),
+                ..default()
+            },
             ..default()
         },
-        transform: Transform {
-            scale: location.size().extend(1.0),
-            translation: location.position().extend(0.0),
-            ..default()
-        },
-        ..default()
-    });
+        Collider,
+    ));
 }
