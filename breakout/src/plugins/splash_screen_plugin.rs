@@ -10,7 +10,7 @@ use bevy::{
     utils::default,
 };
 
-use crate::{despawn_by, GameState};
+use crate::{states::GameState, systems::despawn_by};
 
 #[derive(Component)]
 pub struct SplashScreen;

@@ -1,28 +1,22 @@
 mod components;
 mod plugins;
+mod states;
+mod systems;
 
 use bevy::{
     app::{App, FixedUpdate},
     color::Color,
-    prelude::{
-        in_state, AppExtStates, ClearColor, Commands, Component, DespawnRecursiveExt, Entity,
-        IntoSystemConfigs, Query, States, With,
-    },
+    prelude::{in_state, AppExtStates, ClearColor, IntoSystemConfigs},
     DefaultPlugins,
 };
 
-use crate::plugins::{
-    BallPlugin, BrickPlugin, CameraPlugin, ColliderPlugin, PaddlePlugin, SplashScreenPlugin,
-    WallsPlugin,
+use crate::{
+    plugins::{
+        BallPlugin, BrickPlugin, CameraPlugin, ColliderPlugin, PaddlePlugin, SplashScreenPlugin,
+        WallsPlugin,
+    },
+    states::GameState,
 };
-
-#[derive(Clone, Copy, Debug, Default, Eq, Hash, PartialEq, States)]
-enum GameState {
-    InGame,
-
-    #[default]
-    SplashScreen,
-}
 
 fn main() {
     App::new()
@@ -48,13 +42,4 @@ fn main() {
         .insert_resource(ClearColor(Color::srgb_u8(40, 40, 40)))
         .init_state::<GameState>()
         .run();
-}
-
-fn despawn_by<T>(mut commands: Commands, entities_query: Query<Entity, With<T>>)
-where
-    T: Component,
-{
-    for entity in &entities_query {
-        commands.entity(entity).despawn_recursive();
-    }
 }
