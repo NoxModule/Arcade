@@ -12,11 +12,9 @@ use crate::plugins::{
     BallPlugin, BrickPlugin, CameraPlugin, ColliderPlugin, PaddlePlugin, WallsPlugin,
 };
 
-const BACKGROUND_COLOR: Color = Color::srgb(0.392, 0.584, 0.929);
-
 fn main() {
     App::new()
-        .insert_resource(ClearColor(BACKGROUND_COLOR))
+        .insert_resource(ClearColor(Color::BLACK))
         .add_plugins((
             DefaultPlugins,
             BallPlugin,

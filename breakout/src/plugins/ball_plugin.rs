@@ -24,7 +24,6 @@ impl Plugin for BallPlugin {
 
 pub const BALL_DIAMETER: f32 = 30.0;
 
-const BALL_COLOR: Color = Color::srgb(0.5, 0.13, 0.13);
 const BALL_SPEED: f32 = 400.0;
 const BALL_STARTING_POS: Vec3 = Vec3::new(0.0, -50.0, 1.0);
 const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(0.5, -0.5);
@@ -44,7 +43,7 @@ impl BallPlugin {
     ) {
         commands.spawn((
             MaterialMesh2dBundle {
-                material: materials.add(BALL_COLOR),
+                material: materials.add(Color::WHITE),
                 mesh: meshes.add(Circle::default()).into(),
                 transform: Transform::from_translation(BALL_STARTING_POS)
                     .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.)),

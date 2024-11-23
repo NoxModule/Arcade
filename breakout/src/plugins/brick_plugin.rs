@@ -13,7 +13,6 @@ use super::{
     walls_plugin::{LEFT_WALL_X_POS, RIGHT_WALL_X_POS, TOP_WALL_Y_POS},
 };
 
-const BRICK_COLOR: Color = Color::srgb(0.5, 0.5, 1.0);
 const BRICK_PADDING: f32 = 5.0;
 const BRICK_SIZE: Vec2 = Vec2::new(100.0, 30.0);
 const BRICKS_FIELD_BOTTOM: f32 = PADDLE_Y_POS + BRICKS_PADDLE_PADDING;
@@ -52,7 +51,7 @@ impl BrickPlugin {
                 commands.spawn((
                     SpriteBundle {
                         sprite: Sprite {
-                            color: BRICK_COLOR,
+                            color: Color::WHITE,
                             ..default()
                         },
                         transform: Transform {

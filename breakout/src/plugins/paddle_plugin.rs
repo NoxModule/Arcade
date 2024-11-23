@@ -27,7 +27,6 @@ impl Plugin for PaddlePlugin {
 
 pub const PADDLE_Y_POS: f32 = BOTTOM_WALL_Y_POS + PADDLE_FLOOR_GAP_SIZE;
 
-const PADDLE_COLOR: Color = Color::srgb(0.13, 0.13, 0.13);
 const PADDLE_FLOOR_GAP_SIZE: f32 = 60.0;
 const PADDLE_PADDING: f32 = 10.0;
 const PADDLE_SPEED: f32 = 500.0;
@@ -64,7 +63,7 @@ impl PaddlePlugin {
         commands.spawn((
             SpriteBundle {
                 sprite: Sprite {
-                    color: PADDLE_COLOR,
+                    color: Color::WHITE,
                     ..default()
                 },
                 transform: Transform {
