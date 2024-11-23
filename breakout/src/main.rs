@@ -2,9 +2,9 @@ mod components;
 mod plugins;
 
 use bevy::{
-    app::{App, Startup},
+    app::{App, FixedUpdate, Startup},
     color::Color,
-    prelude::{Camera2dBundle, ClearColor, Commands},
+    prelude::{Camera2dBundle, ClearColor, Commands, IntoSystemConfigs},
     DefaultPlugins,
 };
 use plugins::{BallPlugin, PaddlePlugin, WallsPlugin};
@@ -16,6 +16,10 @@ fn main() {
         .add_plugins((DefaultPlugins, BallPlugin, PaddlePlugin, WallsPlugin))
         .insert_resource(ClearColor(BACKGROUND_COLOR))
         .add_systems(Startup, setup)
+        .add_systems(
+            FixedUpdate,
+            (BallPlugin::apply_velocity, PaddlePlugin::move_paddle).chain(),
+        )
         .run();
 }
 
