@@ -1,13 +1,15 @@
 use bevy::{
-    app::{App, Plugin, Startup},
+    app::{App, Plugin},
     color::Color,
     input::ButtonInput,
     math::{Vec2, Vec3},
-    prelude::{Commands, Component, KeyCode, Query, Res, Transform, With},
+    prelude::{Commands, Component, KeyCode, OnEnter, Query, Res, Transform, With},
     sprite::{Sprite, SpriteBundle},
     time::Time,
     utils::default,
 };
+
+use crate::GameState;
 
 use super::{
     collider_plugin::Collider,
@@ -21,7 +23,7 @@ pub struct PaddlePlugin;
 
 impl Plugin for PaddlePlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, PaddlePlugin::setup);
+        app.add_systems(OnEnter(GameState::InGame), PaddlePlugin::setup);
     }
 }
 

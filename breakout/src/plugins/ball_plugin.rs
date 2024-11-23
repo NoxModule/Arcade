@@ -1,15 +1,15 @@
 use bevy::{
-    app::{App, Plugin, Startup},
+    app::{App, Plugin},
     asset::Assets,
     color::Color,
     math::{Vec2, Vec3},
-    prelude::{Circle, Commands, Component, Mesh, Query, Res, ResMut, Transform},
+    prelude::{Circle, Commands, Component, Mesh, OnEnter, Query, Res, ResMut, Transform},
     sprite::{ColorMaterial, MaterialMesh2dBundle},
     time::Time,
     utils::default,
 };
 
-use crate::components::Velocity;
+use crate::{components::Velocity, GameState};
 
 #[derive(Component)]
 pub struct Ball;
@@ -18,7 +18,7 @@ pub struct BallPlugin;
 
 impl Plugin for BallPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, BallPlugin::setup);
+        app.add_systems(OnEnter(GameState::InGame), BallPlugin::setup);
     }
 }
 

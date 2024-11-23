@@ -5,13 +5,15 @@ pub use wall_location::{
 };
 
 use bevy::{
-    app::{App, Plugin, Startup},
+    app::{App, Plugin},
     color::Color,
-    prelude::{Commands, Transform},
+    prelude::{Commands, OnEnter, Transform},
     sprite::{Sprite, SpriteBundle},
     utils::default,
 };
 use wall_location::WallLocation;
+
+use crate::GameState;
 
 use super::collider_plugin::Collider;
 
@@ -19,7 +21,7 @@ pub struct WallsPlugin;
 
 impl Plugin for WallsPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, setup);
+        app.add_systems(OnEnter(GameState::InGame), setup);
     }
 }
 

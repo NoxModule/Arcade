@@ -1,11 +1,13 @@
 use bevy::{
-    app::{App, Plugin, Startup},
+    app::{App, Plugin},
     color::Color,
     math::{Vec2, Vec3},
-    prelude::{Commands, Component, Transform},
+    prelude::{Commands, Component, OnEnter, Transform},
     sprite::{Sprite, SpriteBundle},
     utils::default,
 };
+
+use crate::GameState;
 
 use super::{
     collider_plugin::Collider,
@@ -71,6 +73,6 @@ impl BrickPlugin {
 
 impl Plugin for BrickPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(Startup, BrickPlugin::setup);
+        app.add_systems(OnEnter(GameState::InGame), BrickPlugin::setup);
     }
 }
