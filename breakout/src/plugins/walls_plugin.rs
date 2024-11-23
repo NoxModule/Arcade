@@ -1,6 +1,8 @@
 mod wall_location;
 
-pub use wall_location::{BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, WALL_THICKNESS};
+pub use wall_location::{
+    BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, TOP_WALL_Y_POS, WALL_THICKNESS,
+};
 
 use bevy::{
     app::{App, Plugin, Startup},

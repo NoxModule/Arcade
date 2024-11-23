@@ -25,6 +25,8 @@ impl Plugin for PaddlePlugin {
     }
 }
 
+pub const PADDLE_Y_POS: f32 = BOTTOM_WALL_Y_POS + PADDLE_FLOOR_GAP_SIZE;
+
 const PADDLE_COLOR: Color = Color::srgb(0.13, 0.13, 0.13);
 const PADDLE_FLOOR_GAP_SIZE: f32 = 60.0;
 const PADDLE_PADDING: f32 = 10.0;
@@ -59,8 +61,6 @@ impl PaddlePlugin {
     }
 
     fn setup(mut commands: Commands) {
-        let paddle_y_pos = BOTTOM_WALL_Y_POS + PADDLE_FLOOR_GAP_SIZE;
-
         commands.spawn((
             SpriteBundle {
                 sprite: Sprite {
@@ -69,7 +69,7 @@ impl PaddlePlugin {
                 },
                 transform: Transform {
                     scale: PADDLE_SIZE.extend(1.0),
-                    translation: Vec3::new(0.0, paddle_y_pos, 0.0),
+                    translation: Vec3::new(0.0, PADDLE_Y_POS, 0.0),
                     ..default()
                 },
                 ..default()

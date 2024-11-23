@@ -1,12 +1,15 @@
 use bevy::{
     app::{App, Plugin},
     math::bounding::{Aabb2d, BoundingCircle, BoundingVolume, IntersectsVolume},
-    prelude::{Component, Event, EventWriter, Query, Transform, With},
+    prelude::{Commands, Component, Entity, Event, EventWriter, Query, Transform, With},
 };
 
 use crate::components::Velocity;
 
-use super::ball_plugin::{Ball, BALL_DIAMETER};
+use super::{
+    ball_plugin::{Ball, BALL_DIAMETER},
+    brick_plugin::Brick,
+};
 
 #[derive(Component)]
 pub struct Collider;
@@ -32,13 +35,14 @@ enum Collision {
 
 impl ColliderPlugin {
     pub fn check_collisions(
+        mut commands: Commands,
         mut ball_query: Query<(&mut Velocity, &Transform), With<Ball>>,
-        collider_query: Query<&Transform, With<Collider>>,
+        collider_query: Query<(Entity, &Transform, Option<&Brick>), With<Collider>>,
         mut collision_events: EventWriter<CollisionEvent>,
     ) {
         let (mut ball_velocity, ball_transform) = ball_query.single_mut();
 
-        for collider_transform in &collider_query {
+        for (collider_entity, collider_transform, maybe_brick) in &collider_query {
             let collision = ColliderPlugin::ball_collision(
                 BoundingCircle::new(ball_transform.translation.truncate(), BALL_DIAMETER / 2.0),
                 Aabb2d::new(
@@ -49,6 +53,10 @@ impl ColliderPlugin {
 
             if let Some(collision) = collision {
                 collision_events.send_default();
+
+                if maybe_brick.is_some() {
+                    commands.entity(collider_entity).despawn();
+                }
 
                 let mut reflect_x = false;
                 let mut reflect_y = false;

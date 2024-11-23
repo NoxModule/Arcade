@@ -7,7 +7,7 @@ use bevy::{
     prelude::{Camera2dBundle, ClearColor, Commands, IntoSystemConfigs},
     DefaultPlugins,
 };
-use plugins::{BallPlugin, ColliderPlugin, PaddlePlugin, WallsPlugin};
+use plugins::{BallPlugin, BrickPlugin, ColliderPlugin, PaddlePlugin, WallsPlugin};
 
 const BACKGROUND_COLOR: Color = Color::srgb(0.392, 0.584, 0.929);
 
@@ -16,6 +16,7 @@ fn main() {
         .add_plugins((
             DefaultPlugins,
             BallPlugin,
+            BrickPlugin,
             ColliderPlugin,
             PaddlePlugin,
             WallsPlugin,

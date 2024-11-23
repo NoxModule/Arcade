@@ -1,9 +1,10 @@
 mod ball_plugin;
+mod brick_plugin;
 mod collider_plugin;
 mod paddle_plugin;
 mod walls_plugin;
 
-pub use ball_plugin::BallPlugin;
-pub use collider_plugin::ColliderPlugin;
-pub use paddle_plugin::PaddlePlugin;
-pub use walls_plugin::WallsPlugin;
+pub use self::{
+    ball_plugin::BallPlugin, brick_plugin::BrickPlugin, collider_plugin::ColliderPlugin,
+    paddle_plugin::PaddlePlugin, walls_plugin::WallsPlugin,
+};
