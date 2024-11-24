@@ -4,11 +4,10 @@ use bevy::{
     prelude::{Commands, Component, Entity, Event, EventWriter, Query, Transform, With},
 };
 
-use crate::components::Velocity;
-
 use super::{
     ball_plugin::{Ball, BALL_DIAMETER},
     brick_plugin::Brick,
+    components::Velocity,
 };
 
 #[derive(Component)]
@@ -17,20 +16,19 @@ pub struct Collider;
 #[derive(Default, Event)]
 pub struct CollisionEvent;
 
-pub struct ColliderPlugin;
-
-impl Plugin for ColliderPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_event::<CollisionEvent>();
-    }
-}
-
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Collision {
     Bottom,
     Left,
     Right,
     Top,
+}
+
+pub struct ColliderPlugin;
+impl Plugin for ColliderPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_event::<CollisionEvent>();
+    }
 }
 
 impl ColliderPlugin {

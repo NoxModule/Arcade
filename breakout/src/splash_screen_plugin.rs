@@ -34,7 +34,7 @@ impl SplashScreenPlugin {
         mut timeout: ResMut<SplashScreenTimeout>,
     ) {
         if timeout.tick(time.delta()).finished() {
-            game_state.set(GameState::InGame);
+            game_state.set(GameState::Game);
         }
     }
 

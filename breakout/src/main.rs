@@ -1,45 +1,25 @@
-mod components;
-mod plugins;
+mod camera_plugin;
+mod game_plugin;
+mod splash_screen_plugin;
 mod states;
 mod systems;
 
 use bevy::{
-    app::{App, FixedUpdate},
+    app::App,
     color::Color,
-    prelude::{in_state, AppExtStates, ClearColor, IntoSystemConfigs},
+    prelude::{AppExtStates, ClearColor},
     DefaultPlugins,
-};
-
-use crate::{
-    plugins::{
-        BallPlugin, BrickPlugin, CameraPlugin, ColliderPlugin, PaddlePlugin, SplashScreenPlugin,
-        WallsPlugin,
-    },
-    states::GameState,
 };
 
 fn main() {
     App::new()
         .add_plugins((
             DefaultPlugins,
-            BallPlugin,
-            BrickPlugin,
-            CameraPlugin,
-            ColliderPlugin,
-            PaddlePlugin,
-            SplashScreenPlugin,
-            WallsPlugin,
+            camera_plugin::CameraPlugin,
+            game_plugin::GamePlugin,
+            splash_screen_plugin::SplashScreenPlugin,
         ))
-        .add_systems(
-            FixedUpdate,
-            (
-                BallPlugin::apply_velocity.run_if(in_state(GameState::InGame)),
-                PaddlePlugin::move_paddle.run_if(in_state(GameState::InGame)),
-                ColliderPlugin::check_collisions.run_if(in_state(GameState::InGame)),
-            )
-                .chain(),
-        )
         .insert_resource(ClearColor(Color::srgb_u8(40, 40, 40)))
-        .init_state::<GameState>()
+        .init_state::<states::GameState>()
         .run();
 }

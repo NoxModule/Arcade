@@ -9,24 +9,25 @@ use bevy::{
     utils::default,
 };
 
-use crate::{components::Velocity, GameState};
+use crate::states::GameState;
 
-#[derive(Component)]
-pub struct Ball;
-
-pub struct BallPlugin;
-
-impl Plugin for BallPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::InGame), BallPlugin::setup);
-    }
-}
+use super::components::Velocity;
 
 pub const BALL_DIAMETER: f32 = 30.0;
 
 const BALL_SPEED: f32 = 400.0;
 const BALL_STARTING_POS: Vec3 = Vec3::new(0.0, -50.0, 1.0);
 const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(0.5, -0.5);
+
+#[derive(Component)]
+pub struct Ball;
+
+pub struct BallPlugin;
+impl Plugin for BallPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(OnEnter(GameState::Game), BallPlugin::setup);
+    }
+}
 
 impl BallPlugin {
     pub fn apply_velocity(time: Res<Time>, mut query: Query<(&mut Transform, &Velocity)>) {

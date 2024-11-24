@@ -9,23 +9,12 @@ use bevy::{
     utils::default,
 };
 
-use crate::GameState;
+use crate::states::GameState;
 
 use super::{
     collider_plugin::Collider,
     walls_plugin::{BOTTOM_WALL_Y_POS, LEFT_WALL_X_POS, RIGHT_WALL_X_POS, WALL_THICKNESS},
 };
-
-#[derive(Component)]
-pub struct Paddle;
-
-pub struct PaddlePlugin;
-
-impl Plugin for PaddlePlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::InGame), PaddlePlugin::setup);
-    }
-}
 
 pub const PADDLE_Y_POS: f32 = BOTTOM_WALL_Y_POS + PADDLE_FLOOR_GAP_SIZE;
 
@@ -37,6 +26,16 @@ const LEFT_BOUND: f32 =
     LEFT_WALL_X_POS + WALL_THICKNESS / 2.0 + PADDLE_SIZE.x / 2.0 + PADDLE_PADDING;
 const RIGHT_BOUND: f32 =
     RIGHT_WALL_X_POS - WALL_THICKNESS / 2.0 - PADDLE_SIZE.x / 2.0 - PADDLE_PADDING;
+
+#[derive(Component)]
+pub struct Paddle;
+
+pub struct PaddlePlugin;
+impl Plugin for PaddlePlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(OnEnter(GameState::Game), PaddlePlugin::setup);
+    }
+}
 
 impl PaddlePlugin {
     pub fn move_paddle(

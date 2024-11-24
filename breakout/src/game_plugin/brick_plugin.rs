@@ -7,7 +7,7 @@ use bevy::{
     utils::default,
 };
 
-use crate::GameState;
+use crate::states::GameState;
 
 use super::{
     collider_plugin::Collider,
@@ -28,6 +28,11 @@ const BRICKS_WALLS_PADDING: f32 = 20.0;
 pub struct Brick;
 
 pub struct BrickPlugin;
+impl Plugin for BrickPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(OnEnter(GameState::Game), BrickPlugin::setup);
+    }
+}
 
 impl BrickPlugin {
     fn setup(mut commands: Commands) {
@@ -68,11 +73,5 @@ impl BrickPlugin {
                 ));
             }
         }
-    }
-}
-
-impl Plugin for BrickPlugin {
-    fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::InGame), BrickPlugin::setup);
     }
 }
