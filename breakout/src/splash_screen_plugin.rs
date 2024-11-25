@@ -10,7 +10,7 @@ use bevy::{
     utils::default,
 };
 
-use crate::{states::GameState, systems::despawn_by, UserInterface};
+use crate::{cli_arguments::CliArguments, states::GameState, systems::despawn_by, UserInterface};
 
 #[derive(Component)]
 pub struct SplashScreen;
@@ -41,7 +41,16 @@ impl SplashScreenPlugin {
         }
     }
 
-    fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
+    fn setup(
+        mut commands: Commands,
+        mut game_state: ResMut<NextState<GameState>>,
+        asset_server: Res<AssetServer>,
+        cli_arguments: Res<CliArguments>,
+    ) {
+        if cli_arguments.skip_splash {
+            game_state.set(GameState::MainMenu);
+        }
+
         commands
             .spawn((UserInterface::centered_container(), SplashScreen))
             .with_children(|parent| {

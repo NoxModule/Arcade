@@ -2,8 +2,9 @@
 
 ## Usage
 ```shell
-cargo run
+cargo run -- --help
 ```
 
 ## Crates Used
-- [Bevy](https://github.com/bevyengine/bevy) - Data-driven game engine built in Rust.
+- [Bevy](https://github.com/bevyengine/bevy) - Data-driven game engine.
+- [Clap](https://github.com/clap-rs/clap) - Command-line argument parser.

@@ -1,4 +1,5 @@
 mod camera_plugin;
+mod cli_arguments;
 mod game_plugin;
 mod main_menu_plugin;
 mod splash_screen_plugin;
@@ -12,11 +13,13 @@ use bevy::{
     prelude::{AppExtStates, ClearColor},
     DefaultPlugins,
 };
+use clap::Parser;
 
 pub use crate::user_interface::UserInterface;
 
 fn main() {
     App::new()
+        .insert_resource(cli_arguments::CliArguments::parse())
         .add_plugins((
             DefaultPlugins,
             camera_plugin::CameraPlugin,
