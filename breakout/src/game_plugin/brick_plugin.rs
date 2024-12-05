@@ -3,7 +3,7 @@ use bevy::{
     color::Color,
     math::{Vec2, Vec3},
     prelude::{Commands, Component, OnEnter, Transform},
-    sprite::{Sprite, SpriteBundle},
+    sprite::Sprite,
     utils::default,
 };
 
@@ -56,16 +56,13 @@ impl BrickPlugin {
                 );
 
                 commands.spawn((
-                    SpriteBundle {
-                        sprite: Sprite {
-                            color: Color::WHITE,
-                            ..default()
-                        },
-                        transform: Transform {
-                            translation: brick_position.extend(0.0),
-                            scale: Vec3::new(BRICK_SIZE.x, BRICK_SIZE.y, 1.0),
-                            ..default()
-                        },
+                    Sprite {
+                        color: Color::WHITE,
+                        ..default()
+                    },
+                    Transform {
+                        translation: brick_position.extend(0.0),
+                        scale: Vec3::new(BRICK_SIZE.x, BRICK_SIZE.y, 1.0),
                         ..default()
                     },
                     Brick,

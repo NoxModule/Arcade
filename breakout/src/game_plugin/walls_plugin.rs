@@ -4,7 +4,7 @@ use bevy::{
     app::{App, Plugin},
     color::Color,
     prelude::{Commands, OnEnter, Transform},
-    sprite::{Sprite, SpriteBundle},
+    sprite::Sprite,
     utils::default,
 };
 
@@ -35,16 +35,13 @@ impl WallsPlugin {
 
     fn spawn_wall(commands: &mut Commands, location: WallLocation) {
         commands.spawn((
-            SpriteBundle {
-                sprite: Sprite {
-                    color: Color::WHITE,
-                    ..default()
-                },
-                transform: Transform {
-                    scale: location.size().extend(1.0),
-                    translation: location.position().extend(0.0),
-                    ..default()
-                },
+            Sprite {
+                color: Color::WHITE,
+                ..default()
+            },
+            Transform {
+                scale: location.size().extend(1.0),
+                translation: location.position().extend(0.0),
                 ..default()
             },
             Collider,

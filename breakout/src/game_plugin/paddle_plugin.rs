@@ -4,7 +4,7 @@ use bevy::{
     input::ButtonInput,
     math::{Vec2, Vec3},
     prelude::{Commands, Component, KeyCode, OnEnter, Query, Res, Transform, With},
-    sprite::{Sprite, SpriteBundle},
+    sprite::Sprite,
     time::Time,
     utils::default,
 };
@@ -55,23 +55,20 @@ impl PaddlePlugin {
         }
 
         let new_paddle_x_pos =
-            paddle_transform.translation.x + direction * PADDLE_SPEED * time.delta_seconds();
+            paddle_transform.translation.x + direction * PADDLE_SPEED * time.delta_secs();
 
         paddle_transform.translation.x = new_paddle_x_pos.clamp(LEFT_BOUND, RIGHT_BOUND);
     }
 
     fn setup(mut commands: Commands) {
         commands.spawn((
-            SpriteBundle {
-                sprite: Sprite {
-                    color: Color::WHITE,
-                    ..default()
-                },
-                transform: Transform {
-                    scale: PADDLE_SIZE.extend(1.0),
-                    translation: Vec3::new(0.0, PADDLE_Y_POS, 0.0),
-                    ..default()
-                },
+            Sprite {
+                color: Color::WHITE,
+                ..default()
+            },
+            Transform {
+                scale: PADDLE_SIZE.extend(1.0),
+                translation: Vec3::new(0.0, PADDLE_Y_POS, 0.0),
                 ..default()
             },
             Paddle,

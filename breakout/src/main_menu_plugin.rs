@@ -2,12 +2,11 @@ use bevy::{
     app::{App, AppExit, Plugin, Update},
     color::Color,
     prelude::{
-        in_state, AppExtStates, BuildChildren, Button, ButtonBundle, Changed, Commands, Component,
-        EventWriter, IntoSystemConfigs, NextState, OnEnter, OnExit, Query, ResMut, TextBundle,
-        With,
+        in_state, AppExtStates, BuildChildren, Button, Changed, ChildBuild, Commands, Component,
+        EventWriter, IntoSystemConfigs, NextState, OnEnter, OnExit, Query, ResMut, Text, With,
     },
-    text::TextStyle,
-    ui::{AlignItems, Interaction, JustifyContent, Style, UiRect, Val},
+    text::TextFont,
+    ui::{AlignItems, BackgroundColor, Interaction, JustifyContent, Node, UiRect, Val},
     utils::default,
 };
 
@@ -17,7 +16,7 @@ use crate::{
     UserInterface,
 };
 
-const BUTTON_DEFAULT_COLOR: Color = Color::srgb(0.15, 0.15, 0.15);
+const BUTTON_DEFAULT_COLOR: Color = Color::srgb(0.17, 0.24, 0.24);
 
 #[derive(Component)]
 pub struct MainMenu;
@@ -68,14 +67,15 @@ impl MainMenuPlugin {
     }
 
     fn main_menu_setup(mut commands: Commands) {
-        let button_style = Style {
+        let button_node = Node {
             align_items: AlignItems::Center,
             justify_content: JustifyContent::Center,
             margin: UiRect::all(Val::Px(20.0)),
+            padding: UiRect::all(Val::Px(5.0)),
             ..default()
         };
 
-        let button_text_style = TextStyle {
+        let button_text_font = TextFont {
             font_size: 40.0,
             ..default()
         };
@@ -83,44 +83,34 @@ impl MainMenuPlugin {
         commands
             .spawn((UserInterface::centered_container(), MainMenu))
             .with_children(|parent| {
-                parent.spawn(
-                    TextBundle::from_section(
-                        "Breakout",
-                        TextStyle {
-                            font_size: 80.0,
-                            ..default()
-                        },
-                    )
-                    .with_style(Style {
-                        margin: UiRect::all(Val::Px(50.0)),
+                parent.spawn((
+                    Text::new("Breakout"),
+                    TextFont {
+                        font_size: 80.0,
                         ..default()
-                    }),
-                );
+                    },
+                ));
 
                 parent
                     .spawn((
-                        ButtonBundle {
-                            background_color: BUTTON_DEFAULT_COLOR.into(),
-                            style: button_style.clone(),
-                            ..default()
-                        },
+                        Button::default(),
+                        button_node.clone(),
+                        BackgroundColor::from(BUTTON_DEFAULT_COLOR),
                         MainMenuAction::Play,
                     ))
                     .with_children(|parent| {
-                        parent.spawn(TextBundle::from_section("Play", button_text_style.clone()));
+                        parent.spawn((Text::new("Play"), button_text_font.clone()));
                     });
 
                 parent
                     .spawn((
-                        ButtonBundle {
-                            background_color: BUTTON_DEFAULT_COLOR.into(),
-                            style: button_style.clone(),
-                            ..default()
-                        },
+                        Button::default(),
+                        button_node.clone(),
+                        BackgroundColor::from(BUTTON_DEFAULT_COLOR),
                         MainMenuAction::Quit,
                     ))
                     .with_children(|parent| {
-                        parent.spawn(TextBundle::from_section("Quit", button_text_style.clone()));
+                        parent.spawn((Text::new("Quit"), button_text_font.clone()));
                     });
             });
     }

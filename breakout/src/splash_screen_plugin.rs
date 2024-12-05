@@ -2,11 +2,10 @@ use bevy::{
     app::{App, Plugin, Update},
     asset::AssetServer,
     prelude::{
-        in_state, BuildChildren, Commands, Component, Deref, DerefMut, ImageBundle,
+        in_state, BuildChildren, ChildBuild, Commands, Component, Deref, DerefMut, ImageNode,
         IntoSystemConfigs, NextState, OnEnter, OnExit, Res, ResMut, Resource,
     },
     time::{Time, Timer, TimerMode},
-    ui::{Style, UiImage, Val},
     utils::default,
 };
 
@@ -54,12 +53,8 @@ impl SplashScreenPlugin {
         commands
             .spawn((UserInterface::centered_container(), SplashScreen))
             .with_children(|parent| {
-                parent.spawn(ImageBundle {
-                    image: UiImage::new(asset_server.load("textures/bevy_icon.png")),
-                    style: Style {
-                        width: Val::Px(200.0),
-                        ..default()
-                    },
+                parent.spawn(ImageNode {
+                    image: asset_server.load("textures/bevy_icon.png"),
                     ..default()
                 });
             });

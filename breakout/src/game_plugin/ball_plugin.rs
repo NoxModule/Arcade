@@ -3,10 +3,9 @@ use bevy::{
     asset::Assets,
     color::Color,
     math::{Vec2, Vec3},
-    prelude::{Circle, Commands, Component, Mesh, OnEnter, Query, Res, ResMut, Transform},
-    sprite::{ColorMaterial, MaterialMesh2dBundle},
+    prelude::{Circle, Commands, Component, Mesh, Mesh2d, OnEnter, Query, Res, ResMut, Transform},
+    sprite::{ColorMaterial, MeshMaterial2d},
     time::Time,
-    utils::default,
 };
 
 use crate::states::GameState;
@@ -32,8 +31,8 @@ impl Plugin for BallPlugin {
 impl BallPlugin {
     pub fn apply_velocity(time: Res<Time>, mut query: Query<(&mut Transform, &Velocity)>) {
         for (mut transform, velocity) in &mut query {
-            transform.translation.x += velocity.x * time.delta_seconds();
-            transform.translation.y += velocity.y * time.delta_seconds();
+            transform.translation.x += velocity.x * time.delta_secs();
+            transform.translation.y += velocity.y * time.delta_secs();
         }
     }
 
@@ -43,13 +42,10 @@ impl BallPlugin {
         mut meshes: ResMut<Assets<Mesh>>,
     ) {
         commands.spawn((
-            MaterialMesh2dBundle {
-                material: materials.add(Color::WHITE),
-                mesh: meshes.add(Circle::default()).into(),
-                transform: Transform::from_translation(BALL_STARTING_POS)
-                    .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.)),
-                ..default()
-            },
+            Mesh2d(meshes.add(Circle::default())),
+            MeshMaterial2d(materials.add(Color::WHITE)),
+            Transform::from_translation(BALL_STARTING_POS)
+                .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.)),
             Ball,
             Velocity(BALL_INITIAL_DIRECTION.normalize() * BALL_SPEED),
         ));
