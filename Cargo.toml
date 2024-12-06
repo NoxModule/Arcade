@@ -1,3 +1,9 @@
-[workspace]
-members = ["breakout"]
-resolver = "2"
+[package]
+name = "arcade"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.15.0"
+bevy_renet = "0.0.12"
+clap = { version = "4.5.21", features = ["derive"] }

@@ -235,6 +235,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "arcade"
+version = "0.1.0"
+dependencies = [
+ "bevy 0.15.0",
+ "bevy_renet",
+ "clap",
+]
+
+[[package]]
 name = "arrayref"
 version = "0.3.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1736,15 +1745,6 @@ dependencies = [
  "futures-io",
  "futures-lite",
  "piper",
-]
-
-[[package]]
-name = "breakout"
-version = "0.1.0"
-dependencies = [
- "bevy 0.15.0",
- "bevy_renet",
- "clap",
 ]
 
 [[package]]
