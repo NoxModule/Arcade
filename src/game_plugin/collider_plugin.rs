@@ -1,11 +1,15 @@
 use bevy::{
     app::{App, Plugin},
-    math::bounding::{Aabb2d, BoundingCircle, BoundingVolume, IntersectsVolume},
+    math::{
+        bounding::{Aabb2d, BoundingCircle, BoundingVolume, IntersectsVolume},
+        Vec2,
+    },
     prelude::{Commands, Component, Entity, Event, EventWriter, Query, Transform, With},
+    sprite::Sprite,
 };
 
 use super::{
-    ball_plugin::{Ball, BALL_DIAMETER},
+    ball_plugin::{Ball, BALL_SIZE},
     brick_plugin::Brick,
     components::Velocity,
 };
@@ -35,17 +39,17 @@ impl ColliderPlugin {
     pub fn check_collisions(
         mut commands: Commands,
         mut ball_query: Query<(&mut Velocity, &Transform), With<Ball>>,
-        collider_query: Query<(Entity, &Transform, Option<&Brick>), With<Collider>>,
+        collider_query: Query<(Entity, &Sprite, &Transform, Option<&Brick>), With<Collider>>,
         mut collision_events: EventWriter<CollisionEvent>,
     ) {
         let (mut ball_velocity, ball_transform) = ball_query.single_mut();
 
-        for (collider_entity, collider_transform, maybe_brick) in &collider_query {
+        for (collider_entity, collider_sprite, collider_transform, maybe_brick) in &collider_query {
             let collision = ColliderPlugin::ball_collision(
-                BoundingCircle::new(ball_transform.translation.truncate(), BALL_DIAMETER / 2.0),
+                BoundingCircle::new(ball_transform.translation.truncate(), BALL_SIZE.y / 2.0),
                 Aabb2d::new(
                     collider_transform.translation.truncate(),
-                    collider_transform.scale.truncate() / 2.0,
+                    collider_sprite.custom_size.unwrap_or(Vec2::splat(1.0)) / 2.0,
                 ),
             );
 

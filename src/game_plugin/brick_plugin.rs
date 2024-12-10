@@ -1,31 +1,29 @@
 use bevy::{
     app::{App, Plugin},
     color::Color,
-    math::{Vec2, Vec3},
+    math::Vec2,
     prelude::{Commands, Component, OnEnter, Transform},
     sprite::Sprite,
-    utils::default,
 };
 
 use crate::states::GameState;
 
 use super::{
     collider_plugin::Collider,
-    paddle_plugin::PADDLE_Y_POS,
-    walls_plugin::{LEFT_WALL_X_POS, RIGHT_WALL_X_POS, TOP_WALL_Y_POS},
+    walls_plugin::{LEFT_WALL_X_POS, TOP_WALL_Y_POS},
 };
 
-const BRICK_PADDING: f32 = 5.0;
-const BRICK_SIZE: Vec2 = Vec2::new(100.0, 30.0);
-const BRICKS_FIELD_BOTTOM: f32 = PADDLE_Y_POS + BRICKS_PADDLE_PADDING;
-const BRICKS_FIELD_HEIGHT: f32 = TOP_WALL_Y_POS - BRICKS_FIELD_BOTTOM - BRICKS_CEILING_PADDING;
-const BRICKS_FIELD_WIDTH: f32 = (RIGHT_WALL_X_POS - LEFT_WALL_X_POS) - 2.0 * BRICKS_WALLS_PADDING;
-const BRICKS_CEILING_PADDING: f32 = 20.0;
-const BRICKS_PADDLE_PADDING: f32 = 270.0;
-const BRICKS_WALLS_PADDING: f32 = 20.0;
+const BRICK_COLUMN_COUNT: usize = 14;
+const BRICK_ROW_COUNT: usize = 8;
+const BRICK_PADDING: f32 = 2.0;
+const BRICK_SIZE: Vec2 = Vec2::new(17.0, 5.0);
 
-#[derive(Component)]
-pub struct Brick;
+const BRICK_ROW_COLORS: [Color; 4] = [
+    Color::srgb(0.88, 0.15, 0.0),
+    Color::srgb(1.0, 0.66, 0.0),
+    Color::srgb(0.0, 0.75, 0.25),
+    Color::srgb(0.99, 1.0, 0.15),
+];
 
 pub struct BrickPlugin;
 impl Plugin for BrickPlugin {
@@ -34,37 +32,27 @@ impl Plugin for BrickPlugin {
     }
 }
 
+#[derive(Component)]
+pub struct Brick;
+
 impl BrickPlugin {
     fn setup(mut commands: Commands) {
-        let n_columns = (BRICKS_FIELD_WIDTH / (BRICK_SIZE.x + BRICK_PADDING)).floor() as usize;
-        let n_rows = (BRICKS_FIELD_HEIGHT / (BRICK_SIZE.y + BRICK_PADDING)).floor() as usize;
-        let n_vertical_gaps = n_columns - 1;
+        let offset_x = LEFT_WALL_X_POS + BRICK_SIZE.x / 2.0 - BRICK_PADDING;
+        let offset_y = TOP_WALL_Y_POS - 50.0;
 
-        let center_of_bricks = (LEFT_WALL_X_POS + RIGHT_WALL_X_POS) / 2.0;
-        let left_edge_of_bricks = center_of_bricks
-            - (n_columns as f32 / 2.0 * BRICK_SIZE.x)
-            - n_vertical_gaps as f32 / 2.0 * BRICK_PADDING;
-
-        let offset_x = left_edge_of_bricks + BRICK_SIZE.x / 2.0;
-        let offset_y = BRICKS_FIELD_BOTTOM + BRICK_SIZE.y / 2.0;
-
-        for row in 0..n_rows {
-            for column in 0..n_columns {
+        for row in 0..BRICK_ROW_COUNT {
+            for column in 0..BRICK_COLUMN_COUNT {
                 let brick_position = Vec2::new(
                     offset_x + column as f32 * (BRICK_SIZE.x + BRICK_PADDING),
-                    offset_y + row as f32 * (BRICK_SIZE.y + BRICK_PADDING),
+                    offset_y - row as f32 * (BRICK_SIZE.y + BRICK_PADDING),
                 );
 
                 commands.spawn((
-                    Sprite {
-                        color: Color::WHITE,
-                        ..default()
-                    },
-                    Transform {
-                        translation: brick_position.extend(0.0),
-                        scale: Vec3::new(BRICK_SIZE.x, BRICK_SIZE.y, 1.0),
-                        ..default()
-                    },
+                    Sprite::from_color(
+                        BRICK_ROW_COLORS[(row / 2) % BRICK_ROW_COLORS.len()].clone(),
+                        BRICK_SIZE,
+                    ),
+                    Transform::from_translation(brick_position.extend(-1.0)),
                     Brick,
                     Collider,
                 ));

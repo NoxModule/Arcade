@@ -5,7 +5,6 @@ use bevy::{
     color::Color,
     prelude::{Commands, OnEnter, Transform},
     sprite::Sprite,
-    utils::default,
 };
 
 use crate::states::GameState;
@@ -27,7 +26,6 @@ impl Plugin for WallsPlugin {
 
 impl WallsPlugin {
     fn setup(mut commands: Commands) {
-        WallsPlugin::spawn_wall(&mut commands, WallLocation::Bottom);
         WallsPlugin::spawn_wall(&mut commands, WallLocation::Left);
         WallsPlugin::spawn_wall(&mut commands, WallLocation::Right);
         WallsPlugin::spawn_wall(&mut commands, WallLocation::Top);
@@ -35,15 +33,8 @@ impl WallsPlugin {
 
     fn spawn_wall(commands: &mut Commands, location: WallLocation) {
         commands.spawn((
-            Sprite {
-                color: Color::WHITE,
-                ..default()
-            },
-            Transform {
-                scale: location.size().extend(1.0),
-                translation: location.position().extend(0.0),
-                ..default()
-            },
+            Sprite::from_color(Color::srgb(0.8, 0.8, 0.8), location.size()),
+            Transform::from_translation(location.position().extend(0.0)),
             Collider,
         ));
     }

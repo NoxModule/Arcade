@@ -2,8 +2,9 @@ use bevy::{
     app::{App, AppExit, Plugin, Update},
     color::Color,
     prelude::{
-        in_state, AppExtStates, BuildChildren, Button, Changed, ChildBuild, Commands, Component,
-        EventWriter, IntoSystemConfigs, NextState, OnEnter, OnExit, Query, ResMut, Text, With,
+        in_state, AppExtStates, BuildChildren, Button, Changed, ChildBuild, ClearColor, Commands,
+        Component, EventWriter, IntoSystemConfigs, NextState, OnEnter, OnExit, Query, Res, ResMut,
+        Text, With,
     },
     text::TextFont,
     ui::{AlignItems, BackgroundColor, Interaction, JustifyContent, Node, UiRect, Val},
@@ -11,6 +12,7 @@ use bevy::{
 };
 
 use crate::{
+    cli_arguments::CliArguments,
     states::{GameState, MainMenuState},
     systems::despawn_by,
     UserInterface,
@@ -80,11 +82,13 @@ impl MainMenuPlugin {
             ..default()
         };
 
+        commands.insert_resource(ClearColor(Color::srgb(0.0, 0.0, 0.0)));
+
         commands
             .spawn((UserInterface::centered_container(), MainMenu))
             .with_children(|parent| {
                 parent.spawn((
-                    Text::new("Breakout"),
+                    Text::new("Arcade"),
                     TextFont {
                         font_size: 80.0,
                         ..default()
@@ -115,7 +119,15 @@ impl MainMenuPlugin {
             });
     }
 
-    fn setup(mut main_menu_state: ResMut<NextState<MainMenuState>>) {
-        main_menu_state.set(MainMenuState::MainMenu);
+    fn setup(
+        mut menu_state: ResMut<NextState<MainMenuState>>,
+        mut game_state: ResMut<NextState<GameState>>,
+        cli_arguments: Res<CliArguments>,
+    ) {
+        if cli_arguments.skip_menu {
+            game_state.set(GameState::Game);
+        } else {
+            menu_state.set(MainMenuState::MainMenu);
+        }
     }
 }

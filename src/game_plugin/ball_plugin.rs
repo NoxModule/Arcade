@@ -1,10 +1,9 @@
 use bevy::{
     app::{App, Plugin},
-    asset::Assets,
     color::Color,
     math::{Vec2, Vec3},
-    prelude::{Circle, Commands, Component, Mesh, Mesh2d, OnEnter, Query, Res, ResMut, Transform},
-    sprite::{ColorMaterial, MeshMaterial2d},
+    prelude::{Commands, Component, OnEnter, Query, Res, Transform},
+    sprite::Sprite,
     time::Time,
 };
 
@@ -12,9 +11,9 @@ use crate::states::GameState;
 
 use super::components::Velocity;
 
-pub const BALL_DIAMETER: f32 = 30.0;
+pub const BALL_SIZE: Vec2 = Vec2::new(7.0, 5.0);
 
-const BALL_SPEED: f32 = 400.0;
+const BALL_SPEED: f32 = 200.0;
 const BALL_STARTING_POS: Vec3 = Vec3::new(0.0, -50.0, 1.0);
 const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(0.5, -0.5);
 
@@ -36,16 +35,10 @@ impl BallPlugin {
         }
     }
 
-    fn setup(
-        mut commands: Commands,
-        mut materials: ResMut<Assets<ColorMaterial>>,
-        mut meshes: ResMut<Assets<Mesh>>,
-    ) {
+    fn setup(mut commands: Commands) {
         commands.spawn((
-            Mesh2d(meshes.add(Circle::default())),
-            MeshMaterial2d(materials.add(Color::WHITE)),
-            Transform::from_translation(BALL_STARTING_POS)
-                .with_scale(Vec2::splat(BALL_DIAMETER).extend(1.)),
+            Sprite::from_color(Color::srgb(0.8, 0.8, 0.8), BALL_SIZE),
+            Transform::from_translation(BALL_STARTING_POS),
             Ball,
             Velocity(BALL_INITIAL_DIRECTION.normalize() * BALL_SPEED),
         ));

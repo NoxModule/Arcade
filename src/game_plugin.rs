@@ -7,7 +7,8 @@ mod walls_plugin;
 
 use bevy::{
     app::{App, FixedUpdate, Plugin},
-    prelude::{in_state, IntoSystemConfigs},
+    color::Color,
+    prelude::{in_state, ClearColor, Commands, IntoSystemConfigs, OnEnter},
 };
 
 use crate::states::GameState;
@@ -27,6 +28,7 @@ impl Plugin for GamePlugin {
             PaddlePlugin,
             WallsPlugin,
         ))
+        .add_systems(OnEnter(GameState::Game), GamePlugin::setup)
         .add_systems(
             FixedUpdate,
             (
@@ -36,5 +38,11 @@ impl Plugin for GamePlugin {
             )
                 .chain(),
         );
+    }
+}
+
+impl GamePlugin {
+    fn setup(mut commands: Commands) {
+        commands.insert_resource(ClearColor(Color::srgb(0.0, 0.0, 0.0)));
     }
 }

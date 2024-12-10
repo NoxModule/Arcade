@@ -8,9 +8,10 @@ mod systems;
 mod user_interface;
 
 use bevy::{
-    app::App,
-    color::Color,
-    prelude::{AppExtStates, ClearColor},
+    app::{App, Update},
+    prelude::{AppExtStates, EventReader, PluginGroup, Single},
+    utils::default,
+    window::{Window, WindowPlugin, WindowResized, WindowResolution},
     DefaultPlugins,
 };
 use clap::Parser;
@@ -21,13 +22,26 @@ fn main() {
     App::new()
         .insert_resource(cli_arguments::CliArguments::parse())
         .add_plugins((
-            DefaultPlugins,
+            (DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    resolution: WindowResolution::new(264.0, 380.0),
+                    title: String::from("Arcade"),
+                    ..default()
+                }),
+                ..default()
+            })),
             camera_plugin::CameraPlugin,
             game_plugin::GamePlugin,
             main_menu_plugin::MainMenuPlugin,
             splash_screen_plugin::SplashScreenPlugin,
         ))
-        .insert_resource(ClearColor(Color::srgb_u8(40, 40, 40)))
+        .add_systems(Update, on_resize)
         .init_state::<states::GameState>()
         .run();
+}
+
+fn on_resize(mut event_reader: EventReader<WindowResized>, mut window: Single<&mut Window>) {
+    for _ in event_reader.read() {
+        window.resolution.set_scale_factor_override(Some(3.0));
+    }
 }

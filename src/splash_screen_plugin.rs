@@ -1,9 +1,10 @@
 use bevy::{
     app::{App, Plugin, Update},
     asset::AssetServer,
+    color::Color,
     prelude::{
-        in_state, BuildChildren, ChildBuild, Commands, Component, Deref, DerefMut, ImageNode,
-        IntoSystemConfigs, NextState, OnEnter, OnExit, Res, ResMut, Resource,
+        in_state, BuildChildren, ChildBuild, ClearColor, Commands, Component, Deref, DerefMut,
+        ImageNode, IntoSystemConfigs, NextState, OnEnter, OnExit, Res, ResMut, Resource,
     },
     time::{Time, Timer, TimerMode},
     utils::default,
@@ -49,6 +50,8 @@ impl SplashScreenPlugin {
         if cli_arguments.skip_splash {
             game_state.set(GameState::MainMenu);
         }
+
+        commands.insert_resource(ClearColor(Color::srgb(0.16, 0.16, 0.16)));
 
         commands
             .spawn((UserInterface::centered_container(), SplashScreen))
